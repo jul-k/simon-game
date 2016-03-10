@@ -10,5 +10,6 @@
 var app = angular.module('simonGameApp');
 
 app.controller('MainCtrl', ['$scope', function ($scope) {
-
+    $scope.numberOfSteps = 0;
+    $scope.startBtn = 'ON';
 }]);
