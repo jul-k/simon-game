@@ -7,11 +7,8 @@
  * # AboutCtrl
  * Controller of the simonGameApp
  */
-angular.module('simonGameApp')
-  .controller('AboutCtrl', function () {
-    this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
-  });
+var app = angular.module('simonGameApp');
+
+app.controller('AboutCtrl', ['$scope', function ($scope) {
+
+}]);
