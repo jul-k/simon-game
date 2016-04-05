@@ -70,7 +70,7 @@ body {
                         text-align: center;
                         width: 30px;
                         display: block;
-                        margin: 10px auto 20px;
+                        margin: 10px auto 10px;
                     }
                     h6 {
                         cursor: pointer;
@@ -78,16 +78,15 @@ body {
                         font-size: 25px;
                         color: #000;
                     }
-                    label {
-                        text-transform: uppercase;
-                        display: block;
-                    }
-                    input[type=checkbox] {
-                        margin-right: 10px;
+                    p {
+                        margin-top: -10px;
+                        input[type=checkbox] {
+                            margin-right: 10px;
+                        }
                     }
                     button {
                         display: inline-block;
-                        margin-top: 5px;
+                        margin-top: -5px;
                         cursor: pointer;
                         text-transform: uppercase;
                         font-size: 12px;
