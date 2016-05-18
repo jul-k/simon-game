@@ -12,6 +12,8 @@ var app = angular.module('simonGameApp');
 app.controller('MainCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
     $scope.numberOfSteps = 0;
     $scope.startBtn = 'ON';
+    $scope.gameSteps = [];
+    $scope.startCommand = false;
 
     $scope.startFn = function () {
         if ($scope.startBtn === 'ON') {
@@ -51,4 +53,24 @@ app.controller('MainCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
         audio.play();
         $scope.changeColor(e);
     };
+
+    $scope.listOfSounds = [$scope.audioGreen,
+        $scope.audioRed,
+        $scope.audioYellow,
+        $scope.audioBlue
+    ];
+
+    $scope.startGame = function() {
+        if ($scope.startCommand===false) {
+            $scope.startCommand = true;
+        } else {
+            $scope.startCommand = false;
+        }
+    };
+
+    // if ($scope.startCommand === true) {
+    //     for (var i=0; $scope.gameSteps.length<20; i++) {
+    //         $scope.gameSteps.push(Math.floor(Math.random()*$scope.listOfSounds.length));
+    //     }
+    // }
 }]);
