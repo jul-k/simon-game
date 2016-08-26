@@ -14,6 +14,14 @@ app.controller('MainCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
     $scope.startBtn = 'ON';
     $scope.gameSteps = [];
     $scope.startCommand = false;
+    $scope.sectors = [
+        {class:'green', sound: "audio-green"},
+        {class:'red', sound: "audio-red"},
+        {class:'blue', sound: "audio-blue"},
+        {class:'yellow', sound: "audio-yellow"}
+    ];
+    $scope.playerList = [];
+    $scope.robotList =[];
 
     $scope.startFn = function () {
         if ($scope.startBtn === 'ON') {
@@ -23,54 +31,36 @@ app.controller('MainCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
         }
     };
 
-    $scope.changeColor = function(e) {
-        angular.element(e.target).css('opacity', '0.8');
-        $timeout(function() {
-            angular.element(e.target).css('opacity', '1');
-        }, 500);
-    };
-
-    $scope.audioGreen = function (e) {
-        var audio = document.getElementById("audio-green");
-        audio.play();
-        $scope.changeColor(e);
-    };
-
-    $scope.audioRed = function (e) {
-        var audio = document.getElementById("audio-red");
-        audio.play();
-        $scope.changeColor(e);
-    };
-
-    $scope.audioYellow = function (e) {
-        var audio = document.getElementById("audio-yellow");
-        audio.play();
-        $scope.changeColor(e);
-    };
-
-    $scope.audioBlue = function (e) {
-        var audio = document.getElementById("audio-blue");
-        audio.play();
-        $scope.changeColor(e);
-    };
-
-    $scope.listOfSounds = [$scope.audioGreen,
-        $scope.audioRed,
-        $scope.audioYellow,
-        $scope.audioBlue
-    ];
-
-    $scope.startGame = function() {
-        if ($scope.startCommand===false) {
-            $scope.startCommand = true;
-        } else {
-            $scope.startCommand = false;
+    $scope.soundFor = function(color) {
+        for (var i = 0; i < $scope.sectors.length; i++) {
+            if ($scope.sectors[i]['class'] == color){
+                return $scope.sectors[i]['sound']
+            }
         }
     };
 
-    // if ($scope.startCommand === true) {
-    //     for (var i=0; $scope.gameSteps.length<20; i++) {
-    //         $scope.gameSteps.push(Math.floor(Math.random()*$scope.listOfSounds.length));
-    //     }
-    // }
+    $scope.Action = function (color) {
+        var soundId = $scope.soundFor(color)
+        var audio = document.getElementById(soundId);
+        audio.play();
+        var elem =  document.getElementsByClassName(color)
+        var elem = angular.element(elem);
+        elem.css('opacity', '0.8');
+        $timeout(function() {
+            elem.css('opacity', '1');
+        }, 500);
+    };
+
+    $scope.startGame = function() {
+        var colors = ['red', 'green', 'blue', 'yellow'];
+        var color = colors[Math.floor(Math.random() * colors.length)];
+        $scope.robotList.push(color);
+        return $scope.Action(color);
+    };
+
+    $scope.clickedSection = function (color) {
+        $scope.playerList.push(color);
+        $scope.Action(color);
+    };
+
 }]);
