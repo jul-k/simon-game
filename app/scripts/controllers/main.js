@@ -13,6 +13,7 @@ app.controller('MainCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
     $scope.numberOfSteps = 0;
     $scope.startBtn = 'ON';
     $scope.restartBtn = "start";
+    $scope.strictMode = false;
     $scope.startCommand = false;
     $scope.sectors = [
         {class:'green', sound: "audio-green"},
@@ -36,15 +37,6 @@ app.controller('MainCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
             $scope.restartBtn = 'restart';
         } else {
             $scope.restartBtn = 'start';
-        }
-    };
-
-    $scope.strictMode = function () {
-        var modeAttr = document.getElementById("strict");
-        if (!modeAttr.hasAttribute("checked")) {
-            modeAttr.setAttribute("checked", "true");
-        } else {
-            modeAttr.removeAttribute("checked");
         }
     };
 
@@ -88,7 +80,7 @@ app.controller('MainCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
         for (var i = 0; i < $scope.robotList.length; i++) {
             $timeout(delay(i), 800 * i);
         }
-    }
+    };
 
     $scope.startGame = function() {
         var color = $scope.getRandColor($scope.robotList);
@@ -104,7 +96,6 @@ app.controller('MainCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
 
     $scope.$watch('playerList', function(){
         var errorPlay = document.getElementById("errorSound");
-        var modeAttrLogic = document.getElementById("strict").hasAttribute("checked");
         if ($scope.playerList.length>0) {
             var playerListLength = $scope.playerList.length;
             var playerListSliced = $scope.playerList.slice(0,playerListLength);
@@ -115,7 +106,7 @@ app.controller('MainCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
                     $timeout($scope.startGame, 1500);
                 }
             } else {
-                if (!modeAttrLogic) {
+                if (!$scope.strictMode) {
                     $scope.playerList = [];
                     $timeout($scope.playExistRoboSounds, 1500);
                 } else {
