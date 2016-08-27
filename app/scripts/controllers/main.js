@@ -39,6 +39,15 @@ app.controller('MainCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
         }
     };
 
+    $scope.strictMode = function () {
+        var modeAttr = document.getElementById("strict");
+        if (!modeAttr.hasAttribute("checked")) {
+            modeAttr.setAttribute("checked", "true");
+        } else {
+            modeAttr.removeAttribute("checked");
+        }
+    };
+
     $scope.soundFor = function(color) {
         for (var i = 0; i < $scope.sectors.length; i++) {
             if ($scope.sectors[i]['class'] === color){
@@ -68,10 +77,7 @@ app.controller('MainCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
         return color;
     };
 
-    $scope.startGame = function() {
-        var color = $scope.getRandColor($scope.robotList);
-        $scope.robotList.push(color);
-        $scope.numberOfSteps++;
+    $scope.playExistRoboSounds = function () {
         function delay(i) {
             return function () {
                 var savedColor = $scope.robotList[i];
@@ -82,6 +88,13 @@ app.controller('MainCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
         for (var i = 0; i < $scope.robotList.length; i++) {
             $timeout(delay(i), 800 * i);
         }
+    }
+
+    $scope.startGame = function() {
+        var color = $scope.getRandColor($scope.robotList);
+        $scope.robotList.push(color);
+        $scope.numberOfSteps++;
+        $scope.playExistRoboSounds();
     };
 
     $scope.clickedSection = function (color) {
@@ -91,6 +104,7 @@ app.controller('MainCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
 
     $scope.$watch('playerList', function(){
         var errorPlay = document.getElementById("errorSound");
+        var modeAttrLogic = document.getElementById("strict").hasAttribute("checked");
         if ($scope.playerList.length>0) {
             var playerListLength = $scope.playerList.length;
             var playerListSliced = $scope.playerList.slice(0,playerListLength);
@@ -101,11 +115,16 @@ app.controller('MainCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
                     $timeout($scope.startGame, 1500);
                 }
             } else {
-                errorPlay.play();
-                $scope.playerList = [];
-                $scope.robotList = [];
-                $scope.numberOfSteps = 0;
-                $scope.restartBtn = 'start';
+                if (!modeAttrLogic) {
+                    $scope.playerList = [];
+                    $timeout($scope.playExistRoboSounds, 1500);
+                } else {
+                    errorPlay.play();
+                    $scope.playerList = [];
+                    $scope.robotList = [];
+                    $scope.numberOfSteps = 0;
+                    $scope.restartBtn = 'start';
+                }
             }
         }
     }, true);
