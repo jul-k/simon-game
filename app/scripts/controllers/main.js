@@ -116,6 +116,7 @@ app.controller('MainCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
             var robotListSliced = $scope.robotList.slice(0,playerListLength);
             if (_.isEqual(playerListSliced, robotListSliced)) {
                 if (_.isEqual($scope.playerList, $scope.robotList)) {
+                    $scope.blocked = true;
                     $scope.playerList = [];
                     $timeout($scope.startGame, 1500);
                 }
