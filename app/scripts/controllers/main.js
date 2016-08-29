@@ -24,6 +24,10 @@ app.controller('MainCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
     $scope.playerList = [];
     $scope.robotList =[];
 
+    $scope.hideWiki = function () {
+        angular.element('.wiki').css('display', 'none');
+    };
+
     $scope.restartFn = function () {
         if ($scope.restartBtn === 'start') {
             $scope.restartBtn = 'restart';

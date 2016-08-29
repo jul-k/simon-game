@@ -88,6 +88,12 @@ body {
                 }
             }
         }
+        .wiki {
+            text-align: center;
+            a:hover, a:active, a:visited, a:focus {
+                text-decoration: none;
+            }
+        }
     }
 }
 
