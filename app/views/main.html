@@ -18,11 +18,11 @@
             </div>
             <div class="center">
                 <input type="text" ng-model="numberOfSteps" disabled>
-                <h6 ng-click="startGame(); restartFn(); restartGame();">{{restartBtn}}</h6>
+                <h6 ng-click="startGame(); restartFn();">{{restartBtn}}</h6>
                 <p><input type="checkbox" id="strict" ng-model="strictMode"> strict</p>
             </div>
             <audio id="errorSound" src="../error.mp3" ></audio>
-            <audio id="tryAgainSound" src="../try-again.mp3"></audio>
+            <audio id="victorySound" src="../victory.mp3"></audio>
         </div>
     </div>
 </div>

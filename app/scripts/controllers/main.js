@@ -29,6 +29,7 @@ app.controller('MainCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
             $scope.restartBtn = 'restart';
         } else {
             $scope.restartBtn = 'start';
+            $scope.restartGame();
         }
     };
 
@@ -36,7 +37,6 @@ app.controller('MainCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
         $scope.robotList = [];
         $scope.playerList = [];
         $scope.numberOfSteps = 0;
-        $scope.startGame();
     };
 
     $scope.soundFor = function(color) {
@@ -117,11 +117,13 @@ app.controller('MainCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
                 }
             } else {
                 if (!$scope.strictMode) {
-                    document.getElementById("tryAgainSound").play();
+                    errorPlay.play();
+                    notie.alert(3, "Ooops... Try again!", 2);
                     $scope.playerList = [];
-                    $timeout($scope.playExistRoboSounds, 1500);
+                    $timeout($scope.playExistRoboSounds, 3000);
                 } else {
                     errorPlay.play();
+                    notie.alert(3, "Game Over", 2);
                     $scope.playerList = [];
                     $scope.robotList = [];
                     $scope.numberOfSteps = 0;
@@ -137,6 +139,11 @@ app.controller('MainCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
             disablThis.setAttribute("disabled", true);
         } else {
             disablThis.removeAttribute("disabled", false);
+        }
+        if ($scope.numberOfSteps === 6) {
+            document.getElementById("victorySound").play();
+            notie.alert(1, "Victory!!!", 2);
+            $scope.restartFn();
         }
     });
 
