@@ -140,7 +140,7 @@ app.controller('MainCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
         } else {
             disablThis.removeAttribute("disabled", false);
         }
-        if ($scope.numberOfSteps === 6) {
+        if ($scope.numberOfSteps === 21) {
             document.getElementById("victorySound").play();
             notie.alert(1, "Victory!!!", 2);
             $scope.restartFn();
