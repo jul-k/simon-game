@@ -11,10 +11,10 @@ var app = angular.module('simonGameApp');
 
 app.controller('MainCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
     $scope.numberOfSteps = 0;
-    $scope.startBtn = 'ON';
     $scope.restartBtn = "start";
     $scope.strictMode = false;
     $scope.startCommand = false;
+    $scope.blocked = false;
     $scope.sectors = [
         {class:'green', sound: "audio-green"},
         {class:'red', sound: "audio-red"},
@@ -24,20 +24,19 @@ app.controller('MainCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
     $scope.playerList = [];
     $scope.robotList =[];
 
-    $scope.startFn = function () {
-        if ($scope.startBtn === 'ON') {
-            $scope.startBtn = 'OFF';
-        } else {
-            $scope.startBtn = 'ON';
-        }
-    };
-
     $scope.restartFn = function () {
         if ($scope.restartBtn === 'start') {
             $scope.restartBtn = 'restart';
         } else {
             $scope.restartBtn = 'start';
         }
+    };
+
+    $scope.restartGame = function() {
+        $scope.robotList = [];
+        $scope.playerList = [];
+        $scope.numberOfSteps = 0;
+        $scope.startGame();
     };
 
     $scope.soundFor = function(color) {
@@ -77,9 +76,13 @@ app.controller('MainCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
             };
 
         }
+        $scope.blocked = true;
         for (var i = 0; i < $scope.robotList.length; i++) {
             $timeout(delay(i), 800 * i);
         }
+        $timeout(function() {
+            $scope.blocked = false;
+        }, 800 * i);
     };
 
     $scope.startGame = function() {
@@ -90,8 +93,15 @@ app.controller('MainCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
     };
 
     $scope.clickedSection = function (color) {
-        $scope.playerList.push(color);
-        $scope.Action(color);
+        if ($scope.blocked){
+            return;
+        }
+        if ($scope.restartBtn === 'restart') {
+            $scope.playerList.push(color);
+            $scope.Action(color);
+        } else {
+            return;
+        }
     };
 
     $scope.$watch('playerList', function(){
@@ -107,6 +117,7 @@ app.controller('MainCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
                 }
             } else {
                 if (!$scope.strictMode) {
+                    document.getElementById("tryAgainSound").play();
                     $scope.playerList = [];
                     $timeout($scope.playExistRoboSounds, 1500);
                 } else {
@@ -119,5 +130,14 @@ app.controller('MainCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
             }
         }
     }, true);
+
+    $scope.$watch('numberOfSteps', function() {
+        var disablThis = document.getElementById("strict");
+        if ($scope.numberOfSteps > 0) {
+            disablThis.setAttribute("disabled", true);
+        } else {
+            disablThis.removeAttribute("disabled", false);
+        }
+    });
 
 }]);
