@@ -122,6 +122,7 @@ app.controller('MainCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
             } else {
                 if (!$scope.strictMode) {
                     errorPlay.play();
+                    $scope.blocked = true;
                     notie.alert(3, "Ooops... Try again!", 2);
                     $scope.playerList = [];
                     $timeout($scope.playExistRoboSounds, 3000);
